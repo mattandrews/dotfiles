@@ -1,0 +1,24 @@
+[user]
+	name = Matt Andrews
+	email = matt@mattandrews.info
+[core]
+	excludesfile = ~/.gitignore_global
+	editor = nano
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path =
+[push]
+	default = simple
+[alias]
+    c = commit -am
+    up = pull
+    p = push
+    pp = pull
+    s = status
+    df = diff --color --color-words --abbrev
+    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+    pushn = !git push -u origin `git rev-parse --abbrev-ref HEAD`
+    co = checkout
+    b = checkout -b
+[color]
+    ui = always
