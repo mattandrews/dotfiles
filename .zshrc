@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/andrem43/.oh-my-zsh
+export ZSH=/Users/matt/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -100,7 +100,7 @@ function server {
         port="8000"
     fi
     open "http://localhost:${port}/"
-    http-server -p "$port"
+    http-server -p "$port" -c-1
 }
 
 alias i="~/.imgcat"
@@ -111,3 +111,14 @@ export PATH="/usr/local/sbin:$PATH"
 export NODE_ENV=DEV
 
 setopt APPEND_HISTORY
+
+alias spb="cd ~/dev/www/spb-django; source ve/bin/activate; python ./spb/manage.py runserver"
+alias spb-quit="deactivate"
+
+
+export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin
+
+# fix python/mysql
+export DYLD_LIBRARY_PATH=/usr/local/mysql/lib/
+
+
