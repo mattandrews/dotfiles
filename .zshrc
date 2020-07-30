@@ -1,25 +1,41 @@
-# Path to your oh-my-zsh installation.
-export ZSH=/Users/matt/.oh-my-zsh
+alias composer="php /usr/local/bin/composer.phar"
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-ZSH_THEME="ys"
-DEFAULT_USER="matt"
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+# Path to your oh-my-zsh installation.
+export ZSH="/Users/matt/.oh-my-zsh"
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+ZSH_THEME="bira"
+
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
 
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
+
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS=true
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
@@ -31,7 +47,7 @@ DEFAULT_USER="matt"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
+# COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -40,23 +56,27 @@ COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Which plugins would you like to load?
+# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-syntax-highlighting aws)
+plugins=(git)
+
+source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-
-source $ZSH/oh-my-zsh.sh
+# export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -71,9 +91,6 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
-
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -83,42 +100,28 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-alias master="git checkout master"
-alias ip="ipconfig getifaddr en0"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-alias desktop="cd ~/Desktop"
 
-# find shorthand
-function f {
-    find . -name "$1"
+
+
+function ec2ip() {
+  ip=$(aws ec2 describe-instances --region eu-west-2 --filters Name=tag:Name,Values=blf-www-live Name=instance-state-name,Values=running | jq '.Reservations[0].Instances[0].PublicIpAddress' --raw-output);
+  echo $ip | tr -d '\n' | pbcopy;
+  echo "✔ $ip is now in your clipboard.";
 }
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /Users/matt/Dev/grants-service/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/matt/Dev/grants-service/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /Users/matt/Dev/grants-service/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/matt/Dev/grants-service/node_modules/tabtab/.completions/sls.zsh
 
-function server {
-    if [[ -n $1 ]] ; then
-        port="$1"
-    else
-        port="8000"
-    fi
-    open "http://localhost:${port}/"
-    http-server -p "$port" -c-1
-}
+alias ls="exa -lbha --group-directories-first"
 
-alias i="~/.imgcat"
+# added by travis gem
+[ ! -s /Users/matt/.travis/travis.sh ] || source /Users/matt/.travis/travis.sh
 
-
-export PATH="/usr/local/sbin:$PATH"
-
-export NODE_ENV=DEV
-
-setopt APPEND_HISTORY
-
-alias spb="cd ~/dev/www/spb-django; source ve/bin/activate; python ./spb/manage.py runserver"
-alias spb-quit="deactivate"
-
-
-export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin
-
-# fix python/mysql
-export DYLD_LIBRARY_PATH=/usr/local/mysql/lib/
-
-
+export PATH=/usr/local/sbin:${PATH}
